@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mentorship Program - AlumniConnect</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://use.typekit.net/yjp3aho.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            'sofia': ['sofia-pro', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .fade-in { animation: fadeIn 0.6s ease-in; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .glass-effect {
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.1);
+    }
+    .mentor-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+    .mentor-card {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  </style>
+</head>
+<body class="font-sofia bg-gray-50 min-h-screen fade-in">
+
+  <!-- Loading Spinner Navbar -->
+<nav class="bg-white shadow-sm border-b border-gray-200" data-id="main-navbar">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-16">
+      <div class="flex items-center">
+        <a href="index.html" class="flex items-center space-x-2" data-id="logo-link">
+          <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+            <i data-lucide="graduation-cap" class="w-5 h-5 text-white"></i>
+          </div>
+          <span class="text-xl font-bold text-gray-900">AlumniConnect</span>
+        </a>
+      </div>
+      
+      <!-- Desktop Navigation -->
+      <div class="hidden md:flex items-center ml-[10px] space-x-8">
+        <a href="/comm" class="text-gray-700 hover:text-blue-600 transition-colors" data-id="nav-home">Community</a>
+        <a href="/dashboard" class="text-gray-700 hover:text-blue-600 transition-colors" data-id="nav-dashboard">Dashboard</a>
+        <a href="/alumni_directory" class="text-gray-700 hover:text-blue-600 transition-colors" data-id="nav-alumni">Alumni Directory</a>
+        <a href="/events" class="text-gray-700 hover:text-blue-600 transition-colors" data-id="nav-events">Events</a>
+        <a href="/mentorship" class="text-gray-700 hover:text-blue-600 transition-colors" data-id="nav-mentorship">Mentorship</a>
+        <a href="/donations" class="text-gray-700 hover:text-blue-600 transition-colors" data-id="nav-donations">Donations</a>
+          <div class="flex items-center gap-4">
+            <span class="pl-[20px] text-gray-900 font-medium whitespace-nowrap">
+              {{ user.name }}
+            </span>
+            <img src="{{ pic }}" class="w-10 h-10 rounded-full border border-gray-300 object-cover shadow" alt="Profile Picture">
+            <a href="/logout">
+              <button class=" bg-green-500 hover:bg-red-500 px-4 py-1 bg-gray-100 hover:bg-gray-200 text-gray-900 rounded transition shadow-sm border border-gray-300 font-semibold">
+                Logout
+              </button>
+            </a>
+          </div>
+      </div>
+      
+      <!-- Mobile menu button -->
+      <div class="md:hidden">
+        <button id="mobile-menu-button" class="text-gray-700 hover:text-blue-600 transition-colors" data-id="mobile-menu-toggle">
+          <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+      </div>
+    </div>
+    
+    <!-- Mobile Navigation -->
+    <div id="mobile-menu" class="md:hidden border-t border-gray-200" data-id="mobile-menu">
+      <div class="px-2 pt-2 pb-3 space-y-1 bg-white">
+        <a href="/communtiy" class="block px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md" data-id="mobile-nav-home">Community</a>
+        <a href="/dashboard" class="block px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md" data-id="mobile-nav-dashboard">Dashboard</a>
+        <a href="/alumni_directory" class="block px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md" data-id="mobile-nav-alumni">Alumni Directory</a>
+        <a href="/events" class="block px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md" data-id="mobile-nav-events">Events</a>
+        <a href="/mentorship" class="block px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md" data-id="mobile-nav-mentorship">Mentorship</a>
+        <a href="/donations" class="block px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md" data-id="mobile-nav-donations">Donations</a>
+        <div class="px-3 py-2 space-y-2">
+          <a href="/login" class="block w-full text-center px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md" data-id="mobile-nav-login">Login</a>
+          <a href="/register" class="block w-full text-center px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700" data-id="mobile-nav-register">Register</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="relative bg-gradient-to-br from-blue-900 via-purple-800 to-indigo-900 text-white py-24 overflow-hidden">
+  <div class="absolute inset-0 bg-black opacity-30"></div>
+  <div class="absolute inset-0">
+    <div class="absolute top-20 left-10 w-72 h-72 bg-blue-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
+    <div class="absolute bottom-20 right-10 w-72 h-72 bg-purple-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse animation-delay-2000"></div>
+  </div>
+  
+  <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center">
+      <div class="inline-flex items-center bg-white bg-opacity-10 rounded-full px-4 py-2 mb-6 glass-effect">
+        <i data-lucide="star" class="w-4 h-4 mr-2 text-yellow-300"></i>
+        <span class="text-sm font-medium">Connect. Learn. Grow.</span>
+      </div>
+      
+      <h1 class="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
+        Mentorship Program
+      </h1>
+      
+      <p class="text-xl md:text-2xl mb-10 text-blue-100 max-w-3xl mx-auto">
+        Bridge the gap between experience and ambition. Connect with mentors who've walked your path and are ready to guide your journey.
+      </p>
+      
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <button class="bg-white text-blue-900 px-8 py-4 rounded-xl font-semibold hover:bg-blue-50 transition-all duration-300 transform hover:scale-105 shadow-lg">
+          <i data-lucide="user-plus" class="w-5 h-5 inline mr-2"></i>
+          Find a Mentor
+        </button>
+        <button class="glass-effect border-2 border-white text-white px-8 py-4 rounded-xl font-semibold hover:bg-white hover:text-blue-900 transition-all duration-300 transform hover:scale-105">
+          <i data-lucide="heart-handshake" class="w-5 h-5 inline mr-2"></i>
+          Become a Mentor
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="py-20 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+        How Mentorship Works
+      </h2>
+      <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+        A simple, effective process to connect mentees with the perfect mentors
+      </p>
+    </div>
+    
+    <div class="grid md:grid-cols-3 gap-8">
+      <div class="text-center group">
+        <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+          <i data-lucide="search" class="w-10 h-10 text-white"></i>
+        </div>
+        <div class="bg-blue-600 text-white text-sm font-bold rounded-full w-8 h-8 flex items-center justify-center mx-auto mb-4">1</div>
+        <h3 class="text-2xl font-semibold text-gray-900 mb-4">Find Your Match</h3>
+        <p class="text-gray-600 leading-relaxed">Browse through our diverse pool of experienced alumni mentors. Filter by industry, expertise, location, and career stage to find your perfect match.</p>
+      </div>
+
+      <div class="text-center group">
+        <div class="w-20 h-20 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+          <i data-lucide="message-circle" class="w-10 h-10 text-white"></i>
+        </div>
+        <div class="bg-green-600 text-white text-sm font-bold rounded-full w-8 h-8 flex items-center justify-center mx-auto mb-4">2</div>
+        <h3 class="text-2xl font-semibold text-gray-900 mb-4">Connect & Engage</h3>
+        <p class="text-gray-600 leading-relaxed">Send a personalized request and start meaningful conversations. Schedule video calls, exchange messages, and build lasting professional relationships.</p>
+      </div>
+
+      <div class="text-center group">
+        <div class="w-20 h-20 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+          <i data-lucide="trending-up" class="w-10 h-10 text-white"></i>
+        </div>
+        <div class="bg-purple-600 text-white text-sm font-bold rounded-full w-8 h-8 flex items-center justify-center mx-auto mb-4">3</div>
+        <h3 class="text-2xl font-semibold text-gray-900 mb-4">Grow Together</h3>
+        <p class="text-gray-600 leading-relaxed">Set goals, track progress, and celebrate achievements. Both mentors and mentees grow through the exchange of knowledge and experiences.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Featured Mentors Section -->
+<section class="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+        Meet Our Featured Mentors
+      </h2>
+      <p class="text-xl text-gray-600">
+        Accomplished professionals ready to share their expertise
+      </p>
+    </div>
+    
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Mentor Card 1 -->
+      <div class="mentor-card bg-white p-8 rounded-2xl shadow-lg">
+        <div class="relative mb-6">
+          <div class="w-20 h-20 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full mx-auto mb-4 flex items-center justify-center">
+            <i data-lucide="user" class="w-10 h-10 text-white"></i>
+          </div>
+          <div class="absolute -bottom-2 left-1/2 transform -translate-x-1/2">
+            <span class="bg-green-500 text-white text-xs px-2 py-1 rounded-full">Available</span>
+          </div>
+        </div>
+        
+        <div class="text-center">
+          <h3 class="text-xl font-bold text-gray-900 mb-2">Sarah Chen</h3>
+          <p class="text-blue-600 font-semibold mb-3">Senior Software Engineer at Google</p>
+          <p class="text-gray-600 text-sm mb-4">Computer Science • Class of 2018</p>
+          
+          <div class="flex flex-wrap gap-2 justify-center mb-6">
+            <span class="bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full">Machine Learning</span>
+            <span class="bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full">Career Transition</span>
+            <span class="bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full">Tech Industry</span>
+          </div>
+          
+          <div class="flex items-center justify-center space-x-4 text-sm text-gray-500 mb-6">
+            <div class="flex items-center">
+              <i data-lucide="star" class="w-4 h-4 text-yellow-400 mr-1"></i>
+              <span>4.9 (24 reviews)</span>
+            </div>
+            <div class="flex items-center">
+              <i data-lucide="users" class="w-4 h-4 mr-1"></i>
+              <span>15 mentees</span>
+            </div>
+          </div>
+          
+          <button class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors font-semibold">
+            Request Mentorship
+          </button>
+        </div>
+      </div>
+
+      <!-- Mentor Card 2 -->
+      <div class="mentor-card bg-white p-8 rounded-2xl shadow-lg">
+        <div class="relative mb-6">
+          <div class="w-20 h-20 bg-gradient-to-br from-green-400 to-green-600 rounded-full mx-auto mb-4 flex items-center justify-center">
+            <i data-lucide="user" class="w-10 h-10 text-white"></i>
+          </div>
+          <div class="absolute -bottom-2 left-1/2 transform -translate-x-1/2">
+            <span class="bg-green-500 text-white text-xs px-2 py-1 rounded-full">Available</span>
+          </div>
+        </div>
+        
+        <div class="text-center">
+          <h3 class="text-xl font-bold text-gray-900 mb-2">Michael Rodriguez</h3>
+          <p class="text-blue-600 font-semibold mb-3">Investment Director at Goldman Sachs</p>
+          <p class="text-gray-600 text-sm mb-4">Business Administration • Class of 2015</p>
+          
+          <div class="flex flex-wrap gap-2 justify-center mb-6">
+            <span class="bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full">Finance</span>
+            <span class="bg-yellow-100 text-yellow-800 text-xs px-3 py-1 rounded-full">Leadership</span>
+            <span class="bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full">Networking</span>
+          </div>
+          
+          <div class="flex items-center justify-center space-x-4 text-sm text-gray-500 mb-6">
+            <div class="flex items-center">
+              <i data-lucide="star" class="w-4 h-4 text-yellow-400 mr-1"></i>
+              <span>4.8 (18 reviews)</span>
+            </div>
+            <div class="flex items-center">
+              <i data-lucide="users" class="w-4 h-4 mr-1"></i>
+              <span>12 mentees</span>
+            </div>
+          </div>
+          
+          <button class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors font-semibold">
+            Request Mentorship
+          </button>
+        </div>
+      </div>
+
+      <!-- Mentor Card 3 -->
+      <div class="mentor-card bg-white p-8 rounded-2xl shadow-lg">
+        <div class="relative mb-6">
+          <div class="w-20 h-20 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full mx-auto mb-4 flex items-center justify-center">
+            <i data-lucide="user" class="w-10 h-10 text-white"></i>
+          </div>
+          <div class="absolute -bottom-2 left-1/2 transform -translate-x-1/2">
+            <span class="bg-yellow-500 text-white text-xs px-2 py-1 rounded-full">Busy</span>
+          </div>
+        </div>
+        
+        <div class="text-center">
+          <h3 class="text-xl font-bold text-gray-900 mb-2">Dr. Emily Johnson</h3>
+          <p class="text-blue-600 font-semibold mb-3">Chief Marketing Officer at Tesla</p>
+          <p class="text-gray-600 text-sm mb-4">Marketing • Class of 2012</p>
+          
+          <div class="flex flex-wrap gap-2 justify-center mb-6">
+            <span class="bg-red-100 text-red-800 text-xs px-3 py-1 rounded-full">Marketing</span>
+            <span class="bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full">Brand Strategy</span>
+            <span class="bg-indigo-100 text-indigo-800 text-xs px-3 py-1 rounded-full">Startups</span>
+          </div>
+          
+          <div class="flex items-center justify-center space-x-4 text-sm text-gray-500 mb-6">
+            <div class="flex items-center">
+              <i data-lucide="star" class="w-4 h-4 text-yellow-400 mr-1"></i>
+              <span>5.0 (31 reviews)</span>
+            </div>
+            <div class="flex items-center">
+              <i data-lucide="users" class="w-4 h-4 mr-1"></i>
+              <span>20 mentees</span>
+            </div>
+          </div>
+          
+          <button class="w-full bg-gray-400 text-white py-3 rounded-lg cursor-not-allowed font-semibold" disabled>
+            Currently Unavailable
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="text-center mt-12">
+      <button class="bg-blue-600 text-white px-8 py-4 rounded-xl hover:bg-blue-700 transition-colors font-semibold">
+        View All Mentors
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- Success Stories Section -->
+<section class="py-20 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+        Success Stories
+      </h2>
+      <p class="text-xl text-gray-600">
+        Real impact from our mentorship community
+      </p>
+    </div>
+    
+    <div class="grid md:grid-cols-2 gap-12">
+      <div class="bg-gradient-to-br from-blue-50 to-indigo-50 p-8 rounded-2xl">
+        <div class="flex items-center mb-6">
+          <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mr-4">
+            <i data-lucide="user" class="w-6 h-6 text-white"></i>
+          </div>
+          <div>
+            <h3 class="font-semibold text-gray-900">Alex Thompson</h3>
+            <p class="text-gray-600 text-sm">Computer Science Student, Class of 2025</p>
+          </div>
+        </div>
+        
+        <blockquote class="text-gray-700 italic mb-4 text-lg leading-relaxed">
+          "My mentor helped me navigate the complex world of tech interviews and land my dream internship at Microsoft. The personalized guidance and industry insights were invaluable."
+        </blockquote>
+        
+        <div class="flex items-center">
+          <div class="flex text-yellow-400 mr-3">
+            <i data-lucide="star" class="w-4 h-4"></i>
+            <i data-lucide="star" class="w-4 h-4"></i>
+            <i data-lucide="star" class="w-4 h-4"></i>
+            <i data-lucide="star" class="w-4 h-4"></i>
+            <i data-lucide="star" class="w-4 h-4"></i>
+          </div>
+          <span class="text-sm text-gray-600">Mentored by Sarah Chen</span>
+        </div>
+      </div>
+      
+      <div class="bg-gradient-to-br from-green-50 to-emerald-50 p-8 rounded-2xl">
+        <div class="flex items-center mb-6">
+          <div class="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center mr-4">
+            <i data-lucide="user" class="w-6 h-6 text-white"></i>
+          </div>
+          <div>
+            <h3 class="font-semibold text-gray-900">Maria Garcia</h3>
+            <p class="text-gray-600 text-sm">MBA Graduate, Class of 2024</p>
+          </div>
+        </div>
+        
+        <blockquote class="text-gray-700 italic mb-4 text-lg leading-relaxed">
+          "The mentorship program transformed my career trajectory. My mentor's network opened doors I never knew existed, and I successfully transitioned into investment banking."
+        </blockquote>
+        
+        <div class="flex items-center">
+          <div class="flex text-yellow-400 mr-3">
+            <i data-lucide="star" class="w-4 h-4"></i>
+            <i data-lucide="star" class="w-4 h-4"></i>
+            <i data-lucide="star" class="w-4 h-4"></i>
+            <i data-lucide="star" class="w-4 h-4"></i>
+            <i data-lucide="star" class="w-4 h-4"></i>
+          </div>
+          <span class="text-sm text-gray-600">Mentored by Michael Rodriguez</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Become a Mentor CTA -->
+<section class="py-20 bg-gradient-to-br from-blue-900 to-purple-900">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <div class="glass-effect rounded-3xl p-12">
+      <div class="w-16 h-16 bg-white bg-opacity-20 rounded-2xl flex items-center justify-center mx-auto mb-8">
+        <i data-lucide="heart-handshake" class="w-8 h-8 text-white"></i>
+      </div>
+      
+      <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
+        Ready to Make a Difference?
+      </h2>
+      
+      <p class="text-xl text-blue-100 mb-8 leading-relaxed">
+        Share your experience, guide the next generation, and give back to your alma mater. Become a mentor and help shape future leaders.
+      </p>
+      
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <button class="bg-white text-blue-900 px-8 py-4 rounded-xl font-semibold hover:bg-blue-50 transition-all duration-300 transform hover:scale-105">
+          <i data-lucide="user-plus" class="w-5 h-5 inline mr-2"></i>
+          Become a Mentor
+        </button>
+        <button class="border-2 border-white text-white px-8 py-4 rounded-xl font-semibold hover:bg-white hover:text-blue-900 transition-all duration-300">
+          <i data-lucide="info" class="w-5 h-5 inline mr-2"></i>
+          Learn More
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-gray-900 text-white" data-id="main-footer">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid md:grid-cols-4 gap-8">
+      <div class="col-span-1">
+        <div class="flex items-center space-x-2 mb-4" data-id="footer-logo">
+          <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+            <i data-lucide="graduation-cap" class="w-5 h-5 text-white"></i>
+          </div>
+          <span class="text-xl font-bold">AlumniConnect</span>
+        </div>
+        <p class="text-gray-400 text-sm" data-id="footer-description">
+          The complete platform for alumni management, networking, and community building.
+        </p>
+      </div>
+
+      <div>
+        <h3 class="font-semibold text-lg mb-4" data-id="footer-platform-title">Platform</h3>
+        <ul class="space-y-2 text-sm text-gray-400">
+          <li><a href="dashboard.html" class="hover:text-white transition-colors" data-id="footer-dashboard">Dashboard</a></li>
+          <li><a href="alumni.html" class="hover:text-white transition-colors" data-id="footer-directory">Alumni Directory</a></li>
+          <li><a href="events.html" class="hover:text-white transition-colors" data-id="footer-events">Events</a></li>
+          <li><a href="mentorship.html" class="hover:text-white transition-colors" data-id="footer-mentorship">Mentorship</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="font-semibold text-lg mb-4" data-id="footer-support-title">Support</h3>
+        <ul class="space-y-2 text-sm text-gray-400">
+          <li><a href="help.html" class="hover:text-white transition-colors" data-id="footer-help">Help Center</a></li>
+          <li><a href="contact.html" class="hover:text-white transition-colors" data-id="footer-contact">Contact Us</a></li>
+          <li><a href="privacy.html" class="hover:text-white transition-colors" data-id="footer-privacy">Privacy Policy</a></li>
+          <li><a href="terms.html" class="hover:text-white transition-colors" data-id="footer-terms">Terms of Service</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="font-semibold text-lg mb-4" data-id="footer-connect-title">Connect</h3>
+        <div class="flex space-x-4">
+          <a href="#" class="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-gray-700 transition-

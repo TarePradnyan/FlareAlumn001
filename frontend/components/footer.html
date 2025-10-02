@@ -1,0 +1,83 @@
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - AlumniConnect</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://use.typekit.net/yjp3aho.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            'sofia': ['sofia-pro', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+<footer class="bg-gray-900 text-white" data-id="main-footer">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid md:grid-cols-4 gap-8">
+      <div class="col-span-1">
+        <div class="flex items-center space-x-2 mb-4" data-id="footer-logo">
+          <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+            <i data-lucide="graduation-cap" class="w-5 h-5 text-white"></i>
+          </div>
+          <span class="text-xl font-bold">AlumniConnect</span>
+        </div>
+        <p class="text-gray-400 text-sm" data-id="footer-description">
+          The complete platform for alumni management, networking, and community building.
+        </p>
+      </div>
+      
+      <div>
+        <h3 class="font-semibold text-lg mb-4" data-id="footer-platform-title">Platform</h3>
+        <ul class="space-y-2 text-sm text-gray-400">
+          <li><a href="dashboard.html" class="hover:text-white transition-colors" data-id="footer-dashboard">Dashboard</a></li>
+          <li><a href="alumni.html" class="hover:text-white transition-colors" data-id="footer-directory">Alumni Directory</a></li>
+          <li><a href="events.html" class="hover:text-white transition-colors" data-id="footer-events">Events</a></li>
+          <li><a href="mentorship.html" class="hover:text-white transition-colors" data-id="footer-mentorship">Mentorship</a></li>
+        </ul>
+      </div>
+      
+      <div>
+        <h3 class="font-semibold text-lg mb-4" data-id="footer-support-title">Support</h3>
+        <ul class="space-y-2 text-sm text-gray-400">
+          <li><a href="help.html" class="hover:text-white transition-colors" data-id="footer-help">Help Center</a></li>
+          <li><a href="contact.html" class="hover:text-white transition-colors" data-id="footer-contact">Contact Us</a></li>
+          <li><a href="privacy.html" class="hover:text-white transition-colors" data-id="footer-privacy">Privacy Policy</a></li>
+          <li><a href="terms.html" class="hover:text-white transition-colors" data-id="footer-terms">Terms of Service</a></li>
+        </ul>
+      </div>
+      
+      <div>
+        <h3 class="font-semibold text-lg mb-4" data-id="footer-connect-title">Connect</h3>
+        <div class="flex space-x-4">
+          <a href="#" class="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-gray-700 transition-colors" data-id="footer-twitter">
+            <i data-lucide="twitter" class="w-5 h-5"></i>
+          </a>
+          <a href="#" class="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-gray-700 transition-colors" data-id="footer-linkedin">
+            <i data-lucide="linkedin" class="w-5 h-5"></i>
+          </a>
+          <a href="#" class="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-gray-700 transition-colors" data-id="footer-facebook">
+            <i data-lucide="facebook" class="w-5 h-5"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="border-t border-gray-800 pt-8 mt-8">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <p class="text-sm text-gray-400" data-id="footer-copyright">
+          © 2024 AlumniConnect. All rights reserved.
+        </p>
+        <div class="flex space-x-6 mt-4 md:mt-0">
+          <a href="privacy.html" class="text-sm text-gray-400 hover:text-white transition-colors" data-id="footer-privacy-link">Privacy</a>
+          <a href="terms.html" class="text-sm text-gray-400 hover:text-white transition-colors" data-id="footer-terms-link">Terms</a>
+          <a href="cookies.html" class="text-sm text-gray-400 hover:text-white transition-colors" data-id="footer-cookies">Cookies</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>

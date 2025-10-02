@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Alumni Directory - FlareAlumns</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://use.typekit.net/yjp3aho.css" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            'sofia': ['sofia-pro', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+</head>
+<body class="font-sofia bg-gray-50 min-h-screen">
+
+  <!-- Navbar and Header remain unchanged -->
+
+  <nav class="bg-white shadow-sm border-b border-gray-200" data-id="main-navbar">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <div class="flex items-center">
+          <a href="index.html" class="flex items-center space-x-2" data-id="logo-link">
+            <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+              <i data-lucide="graduation-cap" class="w-5 h-5 text-white"></i>
+            </div>
+            <span class="text-xl font-bold text-gray-900">AlumniConnect</span>
+          </a>
+        </div>
+
+        <div class="hidden md:flex items-center ml-[10px] space-x-8">
+          <a href="/comm" class="text-gray-700 hover:text-blue-600 transition-colors" data-id="nav-home">Community</a>
+          <a href="/dashboard" class="text-gray-700 hover:text-blue-600 transition-colors" data-id="nav-dashboard">Dashboard</a>
+          <a href="/alumni_directory" class="text-gray-700 hover:text-blue-600 transition-colors" data-id="nav-alumni">Alumni Directory</a>
+          <a href="/events" class="text-gray-700 hover:text-blue-600 transition-colors" data-id="nav-events">Events</a>
+          <a href="/mentorship" class="text-gray-700 hover:text-blue-600 transition-colors" data-id="nav-mentorship">Mentorship</a>
+          <a href="/donations" class="text-gray-700 hover:text-blue-600 transition-colors" data-id="nav-donations">Donations</a>
+          <div class="flex items-center gap-4">
+            <span class="pl-[20px] text-gray-900 font-medium whitespace-nowrap">
+              {{ user.name }}
+            </span>
+            <img src="{{ pic }}" class="w-10 h-10 rounded-full border border-gray-300 object-cover shadow" alt="Profile Picture" />
+            <a href="/logout">
+              <button class="bg-green-500 hover:bg-red-500 px-4 py-1 bg-gray-100 hover:bg-gray-200 text-gray-900 rounded transition shadow-sm border border-gray-300 font-semibold">
+                Logout
+              </button>
+            </a>
+          </div>
+        </div>
+
+        <div class="md:hidden">
+          <button id="mobile-menu-button" class="text-gray-700 hover:text-blue-600 transition-colors" data-id="mobile-menu-toggle">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Navigation omitted for brevity, keep as is -->
+
+    </div>
+  </nav>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- Page header -->
+    <div class="flex justify-between items-start mb-8">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-900 mb-2">Alumni Directory</h1>
+        <p class="text-gray-600">Connect with {{ alumni|length }} alumni from our community</p>
+      </div>
+      <button type="button" id="export-list-btn" class="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+        <i data-lucide="download" class="w-4 h-4"></i>
+        <span>Export List</span>
+      </button>
+    </div>
+
+    <!-- Filter form -->
+    <form method="GET" action="/alumni_directory" class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6 items-center">
+      <div class="md:col-span-1 relative">
+        <i data-lucide="search" class="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+        <input
+          type="text"
+          name="search"
+          value="{{ request.args.get('search', '') }}"
+          placeholder="Search alumni by name, company, or role..."
+          class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+      <div>
+        <select name="year" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <option value="">All Years</option>
+          {% set current_year = 2025 %} {# Adjust current year as needed #}
+          {% for y in range(current_year, 2009, -1) %}
+          <option value="{{ y }}" {% if request.args.get('year')|int == y %}selected{% endif %}>{{ y }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div>
+        <select name="department" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <option value="">All Departments</option>
+          {% for dept in ['Computer Science', 'Business Administration', 'Engineering', 'Medical Science', 'Finance'] %}
+          <option value="{{ dept }}" {% if request.args.get('department') == dept %}selected{% endif %}>{{ dept }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div>
+        <select name="industry" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <option value="">All Industries</option>
+          {% for ind in ['Technology', 'Healthcare', 'Marketing', 'Finance'] %}
+          <option value="{{ ind }}" {% if request.args.get('industry') == ind %}selected{% endif %}>{{ ind }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="flex items-center justify-end">
+        <button type="submit" class="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-shadow">
+          Filter
+        </button>
+      </div>
+    </form>
+
+<!-- Alumni cards grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  {% for alum in alumni %}
+
+  <!-- Hidden full details for modal -->
+  <div id="alum-details-{{ alum.id }}" class="hidden">
+    <div class="flex items-start space-x-4 mb-4">
+      <img src="{{ alum.avatar_url or 'https://api.dicebear.com/7.x/avataaars/svg?seed=' ~ alum.name }}" alt="{{ alum.name }}" class="w-32 h-32 rounded-full bg-gray-200" />
+      <div class="flex-1">
+        <h2 class="text-2xl font-bold">{{ alum.name }}</h2>
+        {% if alum.is_featured %}
+        <p class="text-yellow-500">⭐ Featured Alumni</p>
+        {% endif %}
+        <p class="text-gray-700">{{ alum.department }} • Class of {{ alum.graduation_year }}</p>
+        <p class="mt-2"><strong>Role:</strong> {{ alum.current_role }}</p>
+        <p><strong>Company:</strong> {{ alum.company }}</p>
+        <p><strong>Location:</strong> {{ alum.location }}</p>
+        <p><strong>Industry:</strong> {{ alum.industry }}</p>
+        <p><strong>Email:</strong> <a href="mailto:{{ alum.email }}" class="text-blue-600 hover:underline">{{ alum.email }}</a></p>
+        <p><strong>LinkedIn:</strong> <a href="{{ alum.linkedin_url }}" target="_blank" class="text-blue-600 hover:underline">Profile</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Visible summary card clickable -->
+  <div onclick="showModal( {{ alum.id|tojson }}  )" class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow cursor-pointer">
+    <div class="flex items-start space-x-4 mb-4">
+      <img src="{{ alum.avatar_url or 'https://api.dicebear.com/7.x/avataaars/svg?seed=' ~ alum.name }}" alt="{{ alum.name }}" class="w-16 h-16 rounded-full bg-gray-200" />
+      <div class="flex-1">
+        <div class="flex items-center space-x-2">
+          <h3 class="text-lg font-semibold text-gray-900">{{ alum.name }}</h3>
+          {% if alum.is_featured %}
+          <span class="text-yellow-500">⭐</span>
+          {% endif %}
+        </div>
+        <p class="text-sm text-gray-600">{{ alum.department }} • Class of {{ alum.graduation_year }}</p>
+      </div>
+    </div>
+    <div class="space-y-2 mb-4">
+      <div class="flex items-center text-sm text-gray-700">
+        <i data-lucide="briefcase" class="w-4 h-4 mr-2 text-gray-400"></i>
+        <span>{{ alum.current_role }}</span>
+      </div>
+      <div class="flex items-center text-sm text-gray-700">
+        <i data-lucide="building" class="w-4 h-4 mr-2 text-gray-400"></i>
+        <span>{{ alum.company }}</span>
+      </div>
+      <div class="flex items-center text-sm text-gray-700">
+        <i data-lucide="map-pin" class="w-4 h-4 mr-2 text-gray-400"></i>
+        <span>{{ alum.location }}</span>
+      </div>
+    </div>
+    <div class="flex items-center justify-between">
+      <span class="inline-block px-3 py-1 bg-blue-50 text-blue-700 text-xs rounded-full">{{ alum.industry }}</span>
+
+      <div class="flex space-x-2">
+        <a href="mailto:{{ alum.email }}" class="p-2 hover:bg-gray-100 rounded-lg transition-colors" title="Send Email">
+          <i data-lucide="mail" class="w-4 h-4 text-gray-600"></i>
+        </a>
+        <a href="{{ alum.linkedin_url }}" target="_blank" class="p-2 hover:bg-gray-100 rounded-lg transition-colors" title="LinkedIn Profile">
+          <i data-lucide="linkedin" class="w-4 h-4 text-gray-600"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  {% else %}
+  <p class="text-center text-gray-600 col-span-full">No alumni found matching your criteria.</p>
+  {% endfor %}
+</div>
+
+<!-- Modal container -->
+<div id="alumni-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+  <div class="bg-white rounded-lg max-w-lg w-full p-6 relative shadow-lg">
+    <button onclick="closeModal()" class="absolute top-3 right-3 text-gray-600 hover:text-gray-900 text-3xl leading-none">&times;</button>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<script>
+  const modal = document.getElementById('alumni-modal');
+  const modalContent = document.getElementById('modal-content');
+
+  function showModal(alumId) {
+    const alumDetails = document.getElementById('alum-details-' + alumId);
+    if (alumDetails) {
+      modalContent.innerHTML = alumDetails.innerHTML;
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+  }
+
+  function closeModal() {
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+    modalContent.innerHTML = '';
+  }
+
+    document.getElementById('export-list-btn').onclick = function() {
+    // get current search/filter params from form
+    const params = new URLSearchParams(window.location.search);
+    window.location.href = '/alumni_directory/export?' + params.toString();
+  };
+</script>
+
+</body>
+</html>

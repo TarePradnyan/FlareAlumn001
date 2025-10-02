@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Community</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2/dist/tailwind.min.css" rel="stylesheet">
+
+</head>
+<body class="max-w-3xl mx-auto p-6 bg-gray-50 text-gray-900 font-sans">
+
+<h2 class="text-3xl font-semibold text-center mb-6">Community Posts <button onclick="window.location.href='/dashboard'" class="text-base bg-blue-600 text-white ml-10 px-4 py-2 rounded hover:bg-blue-700 transition"> Back</button></h2>
+
+
+
+<form action="/post" method="post" class="bg-white p-6 rounded-lg shadow-md mb-10">
+  <label class="block font-medium mb-2">Message:</label>
+  <textarea name="message" required rows="3" class="w-full border border-gray-300 rounded-md p-2 resize-y mb-4"></textarea>
+  
+  <label class="block font-medium mb-2">Tags (comma separated):</label>
+  <input type="text" name="tags" placeholder="web dev, ml, ai..." class="w-full border border-gray-300 rounded-md p-2 mb-4" />
+  
+  <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Post</button>
+</form>
+
+<div>
+  {% for post in posts %}
+  <div class="bg-white p-5 rounded-lg shadow mb-6 border-l-4 border-blue-600">
+
+    <p class="text-gray-900">{{ user.name }} : {{ post.message }}</p>
+
+    <div class="text-sm italic text-gray-600 mt-3">
+      {% if post.tags_display %}
+        <div class="text-sm italic text-gray-600 mt-3">Tags: {{ post.tags_display }}</div>
+      {% endif %}
+    </div>
+
+    <form action="/like" method="post" class="inline-block mt-3">
+      <input type="hidden" name="post_id" value="{{ post.id }}" />
+      <button type="submit" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition">
+        Like ({{ post.likes }})
+      </button>
+    </form>
+
+    <div class="mt-5">
+      <h4 class="text-lg font-semibold mb-3 text-gray-800">Replies:</h4>
+      {% for reply in post.replies %}
+      <div class="bg-gray-200 rounded p-3 mb-2 text-gray-800 text-sm ml-6">{{ reply.message }}</div>
+      {% endfor %}
+    </div>
+
+    <form action="/reply" method="post" class="mt-3 ml-6 flex space-x-2">
+      <input type="hidden" name="post_id" value="{{ post.id }}" />
+      <input type="text" name="reply_message" required placeholder="Write a reply..." class="flex-grow border border-gray-300 rounded p-2" />
+      <button type="submit" class="bg-green-600 text-white px-3 rounded hover:bg-green-700 transition">Reply</button>
+    </form>
+  </div>
+  {% endfor %}
+</div>
+
+</body>
+</html>

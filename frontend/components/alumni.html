@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alumni Directory - AlumniConnect</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://use.typekit.net/yjp3aho.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            'sofia': ['sofia-pro', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="font-sofia bg-gray-50 min-h-screen">
+  <div id="navbar-container" data-source="components/navbar.html"></div>
+  
+  <!-- Loading Spinner Navbar -->
+<nav class="bg-white shadow-sm border-b border-gray-200" data-id="main-navbar">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-16">
+      <div class="flex items-center">
+        <a href="index.html" class="flex items-center space-x-2" data-id="logo-link">
+          <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+            <i data-lucide="graduation-cap" class="w-5 h-5 text-white"></i>
+          </div>
+          <span class="text-xl font-bold text-gray-900">AlumniConnect</span>
+        </a>
+      </div>
+      
+      <!-- Desktop Navigation -->
+      <div class="hidden md:flex items-center ml-[10px] space-x-8">
+        <a href="/comm" class="text-gray-700 hover:text-blue-600 transition-colors" data-id="nav-home">Community</a>
+        <a href="/dashboard" class="text-gray-700 hover:text-blue-600 transition-colors" data-id="nav-dashboard">Dashboard</a>
+        <a href="/alumni_directory" class="text-gray-700 hover:text-blue-600 transition-colors" data-id="nav-alumni">Alumni Directory</a>
+        <a href="/events" class="text-gray-700 hover:text-blue-600 transition-colors" data-id="nav-events">Events</a>
+        <a href="/mentorship" class="text-gray-700 hover:text-blue-600 transition-colors" data-id="nav-mentorship">Mentorship</a>
+        <a href="/donations" class="text-gray-700 hover:text-blue-600 transition-colors" data-id="nav-donations">Donations</a>
+          <div class="flex items-center gap-4">
+            <span class="pl-[20px] text-gray-900 font-medium whitespace-nowrap">
+              {{ user.name }}
+            </span>
+            <img src="{{ pic }}" class="w-10 h-10 rounded-full border border-gray-300 object-cover shadow" alt="Profile Picture">
+            <a href="/logout">
+              <button class=" bg-green-500 hover:bg-red-500 px-4 py-1 bg-gray-100 hover:bg-gray-200 text-gray-900 rounded transition shadow-sm border border-gray-300 font-semibold">
+                Logout
+              </button>
+            </a>
+          </div>
+      </div>
+      
+      <!-- Mobile menu button -->
+      <div class="md:hidden">
+        <button id="mobile-menu-button" class="text-gray-700 hover:text-blue-600 transition-colors" data-id="mobile-menu-toggle">
+          <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+      </div>
+    </div>
+    
+    <!-- Mobile Navigation -->
+    <div id="mobile-menu" class="md:hidden border-t border-gray-200" data-id="mobile-menu">
+      <div class="px-2 pt-2 pb-3 space-y-1 bg-white">
+        <a href="/community" class="block px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md" data-id="mobile-nav-home">Community</a>
+        <a href="/dashboard" class="block px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md" data-id="mobile-nav-dashboard">Dashboard</a>
+        <a href="/alumni_directory" class="block px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md" data-id="mobile-nav-alumni">Alumni Directory</a>
+        <a href="/events" class="block px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md" data-id="mobile-nav-events">Events</a>
+        <a href="/mentorship" class="block px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md" data-id="mobile-nav-mentorship">Mentorship</a>
+        <a href="/donations" class="block px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md" data-id="mobile-nav-donations">Donations</a>
+        <div class="px-3 py-2 space-y-2">
+          <a href="/login" class="block w-full text-center px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md" data-id="mobile-nav-login">Login</a>
+          <a href="/register" class="block w-full text-center px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700" data-id="mobile-nav-register">Register</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <!-- Search and Filters -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200 mb-6" data-id="search-filters">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2" data-id="search-label">Search Alumni</label>
+          <div class="relative">
+            <input type="text" placeholder="Search by name, company, or location..." class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" data-id="search-input">
+            <i data-lucide="search" class="w-5 h-5 text-gray-400 absolute left-3 top-2.5"></i>
+          </div>
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2" data-id="graduation-year-label">Graduation Year</label>
+          <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" data-id="graduation-year-select">
+            <option value="">All Years</option>
+            <option value="2023">2023</option>
+            <option value="2022">2022</option>
+            <option value="2021">2021</option>
+            <option value="2020">2020</option>
+            <option value="2019">2019</option>
+          </select>
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2" data-id="department-label">Department</label>
+          <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" data-id="department-select">
+            <option value="">All Departments</option>
+            <option value="cs">Computer Science</option>
+            <option value="business">Business</option>
+            <option value="engineering">Engineering</option>
+            <option value="medicine">Medicine</option>
+            <option value="arts">Arts & Humanities</option>
+          </select>
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2" data-id="location-label">Location</label>
+          <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" data-id="location-select">
+            <option value="">All Locations</option>
+            <option value="sf">San Francisco</option>
+            <option value="ny">New York</option>
+            <option value="london">London</option>
+            <option value="toronto">Toronto</option>
+            <option value="sydney">Sydney</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="flex justify-between items-center mt-4">
+        <p class="text-sm text-gray-600" data-id="results-count">Showing 2,847 alumni</p>
+        <div class="flex space-x-2">
+          <button class="text-blue-600 hover:text-blue-700 text-sm font-medium" data-id="clear-filters">Clear filters</button>
+          <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm" data-id="apply-filters">Apply Filters</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Alumni Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" data-id="alumni-grid">
+      <!-- Alumni Card 1 -->
+      <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow" data-id="alumni-card-1">
+        <div class="p-6">
+          <div class="flex items-center space-x-4 mb-4">
+            <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face" alt="Sarah Johnson" class="w-12 h-12 rounded-full object-cover">
+            <div>
+              <h3 class="font-semibold text-gray-900" data-id="alumni-name-1">Sarah Johnson</h3>
+              <p class="text-sm text-gray-600" data-id="alumni-class-1">Class of 2018</p>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <p class="text-sm text-gray-600" data-id="alumni-title-1">
+              <i data-lucide="briefcase" class="w-4 h-4 inline mr-2"></i>
+              Senior Software Engineer at Google
+            </p>
+            <p class="text-sm text-gray-600" data-id="alumni-location-1">
+              <i data-lucide="map-pin" class="w-4 h-4 inline mr-2"></i>
+              San Francisco, CA
+            </p>
+            <p class="text-sm text-gray-600" data-id="alumni-degree-1">
+              <i data-lucide="graduation-cap" class="w-4 h-4 inline mr-2"></i>
+              B.S. Computer Science
+            </p>
+          </div>
+          <div class="flex justify-between items-center mt-4">
+            <div class="flex space-x-2">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800" data-id="alumni-tag-1">Mentor</span>
+            </div>
+            <button class="text-blue-600 hover:text-blue-700" data-id="connect-btn-1">
+              <i data-lucide="message-circle" class="w-5 h-5"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Alumni Card 2 -->
+      <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow" data-id="alumni-card-2">
+        <div class="p-6">
+          <div class="flex items-center space-x-4 mb-4">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face" alt="Michael Chen" class="w-12 h-12 rounded-full object-cover">
+            <div>
+              <h3 class="font-semibold text-gray-900" data-id="alumni-name-2">Michael Chen</h3>
+              <p class="text-sm text-gray-600" data-id="alumni-class-2">Class of 2020</p>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <p class="text-sm text-gray-600" data-id="alumni-title-2">
+              <i data-lucide="briefcase" class="w-4 h-4 inline mr-2"></i>
+              Product Manager at Microsoft
+            </p>
+            <p class="text-sm text-gray-600" data-id="alumni-location-2">
+              <i data-lucide="map-pin" class="w-4 h-4 inline mr-2"></i>
+              Seattle, WA
+            </p>
+            <p class="text-sm text-gray-600" data-id="alumni-degree-2">
+              <i data-lucide="graduation-cap" class="w-4 h-4 inline mr-2"></i>
+              M.B.A. Business Administration
+            </p>
+          </div>
+          <div class="flex justify-between items-center mt-4">
+            <div class="flex space-x-2">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800" data-id="alumni-tag-2">Donor</span>
+            </div>
+            <button class="text-blue-600 hover:text-blue-700" data-id="connect-btn-2">
+              <i data-lucide="message-circle" class="w-5 h-5"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Alumni Card 3 -->
+      <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow" data-id="alumni-card-3">
+        <div class="p-6">
+          <div class="flex items-center space-x-4 mb-4">
+            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face" alt="Emily Davis" class="w-12 h-12 rounded-full object-cover">
+            <div>
+              <h3 class="font-semibold text-gray-900" data-id="alumni-name-3">Emily Davis</h3>
+              <p class="text-sm text-gray-600" data-id="alumni-class-3">Class of 2019</p>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <p class="text-sm text-gray-600" data-id="alumni-title-3">
+              <i data-lucide="briefcase" class="w-4 h-4 inline mr-2"></i>
+              Marketing Director at Tesla
+            </p>
+            <p class="text-sm text-gray-600" data-id="alumni-location-3">
+              <i data-lucide="map-pin" class="w-4 h-4 inline mr-2"></i>
+              Austin, TX
+            </p>
+            <p class="text-sm text-gray-600" data-id="alumni-degree-3">
+              <i data-lucide="graduation-cap" class="w-4 h-4 inline mr-2"></i>
+              B.A. Marketing
+            </p>
+          </div>
+          <div class="flex justify-between items-center mt-4">
+            <div class="flex space-x-2">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800" data-id="alumni-tag-3">Mentor</span>
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800" data-id="alumni-tag-3-2">Speaker</span>
+            </div>
+            <button class="text-blue-600 hover:text-blue-700" data-id="connect-btn-3">
+              <i data-lucide="message-circle" class="w-5 h-5"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Alumni Card 4 -->
+      <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow" data-id="alumni-card-4">
+        <div class="p-6">
+          <div class="flex items-center space-x-4 mb-4">
+            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face" alt="David Wilson" class="w-12 h-12 rounded-full object-cover">
+            <div>
+              <h3 class="font-semibold text-gray-900" data-id="alumni-name-4">David Wilson</h3>
+              <p class="text-sm text-gray-600" data-id="alumni-class-4">Class of 2017</p>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <p class="text-sm text-gray-600" data-id="alumni-title-4">
+              <i data-lucide="briefcase" class="w-4 h-4 inline mr-2"></i>
+              Founder & CEO at TechStart
+            </p>
+            <p class="text-sm text-gray-600" data-id="alumni-location-4">
+              <i data-lucide="map-pin" class="w-4 h-4 inline mr-2"></i>
+              New York, NY
+            </p>
+            <p class="text-sm text-gray-600" data-id="alumni-degree-4">
+              <i data-lucide="graduation-cap" class="w-4 h-4 inline mr-2"></i>
+              B.S. Engineering
+            </p>
+          </div>
+          <div class="flex justify-between items-center mt-4">
+            <div class="flex space-x-2">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800" data-id="alumni-tag-4">Entrepreneur</span>
+            </div>
+            <button class="text-blue-600 hover:text-blue-700" data-id="connect-btn-4">
+              <i data-lucide="message-circle" class="w-5 h-5"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- More alumni cards would continue here... -->
+      <!-- Alumni Card 5 -->
+      <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow" data-id="alumni-card-5">
+        <div class="p-6">
+          <div class="flex items-center space-x-4 mb-4">
+            <img src="https://images.unsplash.com/photo-1544725176-7c40e5a71c5e?w=150&h=150&fit=crop&crop=face" alt="Lisa Thompson" class="w-12 h-12 rounded-full object-cover">
+            <div>
+              <h3 class="font-semibold text-gray-900" data-id="alumni-name-5">Lisa Thompson</h3>
+              <p class="text-sm text-gray-600" data-id="alumni-class-5">Class of 2021</p>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <p class="text-sm text-gray-600" data-id="alumni-title-5">
+              <i data-lucide="briefcase" class="w-4 h-4 inline mr-2"></i>
+              Data Scientist at Meta
+            </p>
+            <p class="text-sm text-gray-600" data-id="alumni-location-5">
+              <i data-lucide="map-pin" class="w-4 h-4 inline mr-2"></i>
+              Menlo Park, CA
+            </p>
+            <p class="text-sm text-gray-600" data-id="alumni-degree-5">
+              <i data-lucide="graduation-cap" class="w-4 h-4 inline mr-2"></i>
+              M.S. Data Science
+            </p>
+          </div>
+          <div class="flex justify-between items-center mt-4">
+            <div class="flex space-x-2">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800" data-id="alumni-tag-5">Mentor</span>
+            </div>
+            <button class="text-blue-600 hover:text-blue-700" data-id="connect-btn-5">
+              <i data-lucide="message-circle" class="w-5 h-5"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Alumni Card 6 -->
+      <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow" data-id="alumni-card-6">
+        <div class="p-6">
+          <div class="flex items-center space-x-4 mb-4">
+            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face" alt="James Rodriguez" class="w-12 h-12 rounded-full object-cover">
+            <div>
+              <h3 class="font-semibold text-gray-900" data-id="alumni-name-6">James Rodriguez</h3>
+              <p class="text-sm text-gray-600" data-id="alumni-class-6">Class of 2016</p>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <p class="text-sm text-gray-600" data-id="alumni-title-6">
+              <i data-lucide="briefcase" class="w-4 h-4 inline mr-2"></i>
+              Investment Banking VP at Goldman Sachs
+            </p>
+            <p class="text-sm text-gray-600" data-id="alumni-location-6">
+              <i data-lucide="map-pin" class="w-4 h-4 inline mr-2"></i>
+              New York, NY
+            </p>
+            <p class="text-sm text-gray-600" data-id="alumni-degree-6">
+              <i data-lucide="graduation-cap" class="w-4 h-4 inline mr-2"></i>
+              B.S. Finance
+            </p>
+          </div>
+          <div class="flex justify-between items-center mt-4">
+            <div class="flex space-x-2">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800" data-id="alumni-tag-6">Donor</span>
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800" data-id="alumni-tag-6-2">Board Member</span>
+            </div>
+            <button class="text-blue-600 hover:text-blue-700" data-id="connect-btn-6">
+              <i data-lucide="message-circle" class="w-5 h-5"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Alumni Card 7 -->
+      <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow" data-id="alumni-card-7">
+        <div class="p-6">
+          <div class="flex items-center space-x-4 mb-4">
+            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&h=150&fit=crop&crop=face" alt="Maria Garcia" class="w-12 h-12 rounded-full object-cover">
+            <div>
+              <h3 class="font-semibold text-gray-900" data-id="alumni-name-7">Maria Garcia</h3>
+              <p class="text-sm text-gray-600" data-id="alumni-class-7">Class of 2022</p>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <p class="text-sm text-gray-600" data-id="alumni-title-7">
+              <i data-lucide="briefcase" class="w-4 h-4 inline mr-2"></i>
+              UX Designer at Adobe
+            </p>
+            <p class="text-sm text-gray-600" data-id="alumni-location-7">
+              <i data-lucide="map-pin" class="w-4 h-4 inline mr-2"></i>
+              San Jose, CA
+            </p>
+            <p class="text-sm text-gray-600" data-id="alumni-degree-7">
+              <i data-lucide="graduation-cap" class="w-4 h-4 inline mr-2"></i>
+              B.A. Design
+            </p>
+          </div>
+          <div class="flex justify-between items-center mt-4">
+            <div class="flex space-x-2">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800" data-id="alumni-tag-7">Mentor</span>
+            </div>
+            <button class="text-blue-600 hover:text-blue-700" data-id="connect-btn-7">
+              <i data-lucide="message-circle" class="w-5 h-5"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Alumni Card 8 -->
+      <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow" data-id="alumni-card-8">
+        <div class="p-6">
+          <div class="flex items-center space-x-4 mb-4">
+            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&h=150&fit=crop&crop=face" alt="Alex Kumar" class="w-12 h-12 rounded-full object-cover">
+            <div>
+              <h3 class="font-semibold text-gray-900" data-id="alumni-name-8">Alex Kumar</h3>
+              <p class="text-sm text-gray-600" data-id="alumni-class-8">Class of 2015</p>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <p class="text-sm text-gray-600" data-id="alumni-title-8">
+              <i data-lucide="briefcase" class="w-4 h-4 inline mr-2"></i>
+              Research Scientist at OpenAI
+            </p>
+            <p class="text-sm text-gray-600" data-id="alumni-location-8">
+              <i data-lucide="map-pin" class="w-4 h-4 inline mr-2"></i>
+              San Francisco, CA
+            </p>
+            <p class="text-sm text-gray-600" data-id="alumni-degree-8">
+              <i data-lucide="graduation-cap" class="w-4 h-4 inline mr-2"></i>
+              Ph.D. Machine Learning
+            </p>
+          </div>
+          <div class="flex justify-between items-center mt-4">
+            <div class="flex space-x-2">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800" data-id="alumni-tag-8">Mentor</span>
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800" data-id="alumni-tag-8-2">Researcher</span>
+            </div>
+            <button class="text-blue-600 hover:text-blue-700" data-id="connect-btn-8">
+              <i data-lucide="message-circle" class="w-5 h-5"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="flex justify-center items-center mt-8 space-x-2" data-id="pagination">
+      <button class="px-3 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50" disabled data-id="prev-page">
+        <i data-lucide="chevron-left" class="w-4 h-4"></i>
+      </button>
+      <button class="px-3 py-2 rounded-lg bg-blue-600 text-white" data-id="page-1">1</button>
+      <button class="px-3 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50" data-id="page-2">2</button>
+      <button class="px-3 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50" data-id="page-3">3</button>
+      <span class="px-2 text-gray-500" data-id="pagination-dots">...</span>
+      <button class="px-3 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50" data-id="page-last">142</button>
+      <button class="px-3 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50" data-id="next-page">
+        <i data-lucide="chevron-right" class="w-4 h-4"></i>
+      </button>
+    </div>
+  </div>
+
+  <div id="footer-container" data-source="components/footer.html"></div>
+  <div id="badge-container" data-source="components/badge.html"></div>
+
+  <script type="module">
+    import { loadComponent } from './scripts/components/loader.js';
+    
+    loadComponent('#navbar-container');
+    loadComponent('#footer-container');
+    loadComponent('#badge-container');
+    
+    setTimeout(() => {
+      lucide.createIcons();
+    }, 100);
+
+    // Search and filter functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const searchInput = document.querySelector('[data-id="search-input"]');
+      const graduationYearSelect = document.querySelector('[data-id="graduation-year-select"]');
+      const departmentSelect = document.querySelector('[data-id="department-select"]');
+      const locationSelect = document.querySelector('[data-id="location-select"]');
+      const applyFiltersBtn = document.querySelector('[data-id="apply-filters"]');
+      const clearFiltersBtn = document.querySelector('[data-id="clear-filters"]');
+
+      // Apply filters functionality
+      applyFiltersBtn?.addEventListener('click', function() {
+        // Here you would implement the actual filtering logic
+        console.log('Applying filters...');
+        // Update results count
+        const resultsCount = document.querySelector('[data-id="results-count"]');
+        if (resultsCount) {
+          resultsCount.textContent = 'Showing 234 alumni';
+        }
+      });
+
+      // Clear filters functionality
+      clearFiltersBtn?.addEventListener('click', function() {
+        searchInput.value = '';
+        graduationYearSelect.value = '';
+        departmentSelect.value = '';
+        locationSelect.value = '';
+        
+        const resultsCount = document.querySelector('[data-id="results-count"]');
+        if (resultsCount) {
+          resultsCount.textContent = 'Showing 2,847 alumni';
+        }
+      });
+
+      // Connect button functionality
+      document.querySelectorAll('[data-id^="connect-btn-"]').forEach(btn => {
+        btn.addEventListener('click', function() {
+          // Here you would implement messaging/connection functionality
+          console.log('Connecting with alumni...');
+        });
+      });
+    });
+  </script>
+</body>
+</html>
