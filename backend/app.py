@@ -8,8 +8,10 @@ from models import db, Admin, Post, Reply, Tag, Alumni, Event, Donation  # Impor
 from pytz import timezone
 from werkzeug.security import generate_password_hash
 import xlsxwriter
+import os
 
-app = Flask(__name__, template_folder="../frontend/components")
+template_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../frontend/components'))
+app = Flask(__name__, template_folder=template_dir)
 app.config.from_object(Config)
 
 # Set secret key immediately after creating app (for sessions & OAuth)
@@ -386,3 +388,4 @@ def logout():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
